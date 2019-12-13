@@ -4,12 +4,28 @@ using FindMe.ViewModels;
 using FindMe.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using FindMe.Services.Interfaces;
+using System.IO;
+using System;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace FindMe
 {
     public partial class App
     {
+        static Database database;
+
+        public static Database Database
+        {
+            get
+            {
+                if (database == null)
+                {
+                    database = new Database(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "people.db3"));
+                }
+                return database;
+            }
+        }
         /* 
          * The Xamarin Forms XAML Previewer in Visual Studio uses System.Activator.CreateInstance.
          * This imposes a limitation in which the App class must have a default constructor. 
@@ -30,6 +46,13 @@ namespace FindMe
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
+            containerRegistry.RegisterForNavigation<CreateAccountPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<PrismMasterDetailPage1, PrismMasterDetailPage1ViewModel>(); 
+            containerRegistry.RegisterForNavigation<AboutUs, AboutUsViewModel>();
+            containerRegistry.RegisterForNavigation<EditProfile, EditProfileViewModel>();
+            containerRegistry.RegisterForNavigation<AddImage, AddImageViewModel>();
+            containerRegistry.RegisterForNavigation<AddCaption, AddCaptionViewModel>();
         }
     }
 }
